@@ -2,6 +2,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using YorozuyaServer.config;
+using YorozuyaServer.server;
+using YorozuyaServer.server.impl;
 using YorozuyaServer.utils;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton(new RedisUtil());
 builder.Services.AddSingleton(new JwtUtil());
-builder.Services.AddDbContext<DbConfig>();
+builder.Services.AddDbContext<DbConfig>(ServiceLifetime.Singleton);
+builder.Services.AddSingleton<UserService, UserServiceImpl>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -22,7 +25,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = "yorozuya",
             ValidAudience = "yorozuya_audience",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("55668899")),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7JF5L1WS8b9S7Hd0De6h2djrV")),
             LifetimeValidator = (before, expires, token, param) =>
             {
                 return expires > DateTime.UtcNow;

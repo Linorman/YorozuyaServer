@@ -7,9 +7,13 @@ namespace YorozuyaServer.utils;
 
 public class JwtUtil
 {
-    public static string GenerateJwtToken(ClaimsIdentity claimsIdentity)
+    public string GenerateJwtToken(long Id)
     {
-        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("55668899"));
+        ClaimsIdentity claimsIdentity = new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.Name, Id.ToString()),
+        });
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7JF5L1WS8b9S7Hd0De6h2djrV"));
         SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         JwtSecurityToken token = new JwtSecurityToken(
@@ -23,7 +27,7 @@ public class JwtUtil
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
     
-    public static ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
+    public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
     {
         TokenValidationParameters validationParameters = new TokenValidationParameters
         {
@@ -33,7 +37,7 @@ public class JwtUtil
             ValidateIssuerSigningKey = true,
             ValidIssuer = "yorozuya",
             ValidAudience = "yorozuya_audience",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("55668899")),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7JF5L1WS8b9S7Hd0De6h2djrV")),
             LifetimeValidator = (before, expires, token, param) =>
             {
                 // 检查令牌的过期时间是否合法
@@ -53,7 +57,7 @@ public class JwtUtil
         return principal;
     }
     
-    public static ClaimsPrincipal? GetPrincipalFromToken(string token)
+    public ClaimsPrincipal? GetPrincipalFromToken(string token)
     {
         TokenValidationParameters validationParameters = new TokenValidationParameters
         {
@@ -63,7 +67,7 @@ public class JwtUtil
             ValidateIssuerSigningKey = true,
             ValidIssuer = "yorozuya",
             ValidAudience = "yorozuya_audience",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("55668899")),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7JF5L1WS8b9S7Hd0De6h2djrV")),
             LifetimeValidator = (before, expires, token, param) =>
             {
                 // 检查令牌的过期时间是否合法
@@ -83,7 +87,7 @@ public class JwtUtil
         return principal;
     }
     
-    public static bool ValidateToken(string token)
+    public bool ValidateToken(string token)
     {
         ClaimsPrincipal? principal = GetPrincipalFromToken(token);
         if (principal == null)

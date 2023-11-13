@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 
 namespace YorozuyaServer.entity;
 
-public partial class UserInfo
+public class UserInfo
 {
     [JsonProperty("createTime")]
     public string CreateTime { get; set; }
@@ -13,7 +13,7 @@ public partial class UserInfo
     public string Field { get; set; }
 
     [JsonProperty("gender")]
-    public string Gender { get; set; }
+    public int Gender { get; set; }
 
     [JsonProperty("id")]
     public long Id { get; set; }

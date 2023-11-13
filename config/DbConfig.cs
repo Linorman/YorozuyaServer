@@ -12,7 +12,7 @@ public class DbConfig : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySQL("server=mysql.sqlpub.com;port=3306;database=yorozuya;uid=yorozuya;pwd=faf3a1b7cd40cd41;CharSet=utf8mb4;");
+        optionsBuilder.UseMySQL("server=localhost;port=3306;database=yorozuya;uid=root;pwd=root;CharSet=utf8mb4;");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

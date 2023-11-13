@@ -4,14 +4,14 @@ namespace YorozuyaServer.utils;
 
 public class RedisUtil
 {
-    public static ConnectionMultiplexer? Connection;
+    private ConnectionMultiplexer? Connection;
     
     public RedisUtil()
     {
         Init();
     }
 
-    private static void Init()
+    private void Init()
     {
         string connectionString = "localhost:6379";
         try
@@ -25,27 +25,27 @@ public class RedisUtil
         }
     }
     
-    private static IDatabase GetDatabase()
+    private IDatabase GetDatabase()
     {
         return Connection.GetDatabase();
     }
     
-    public static bool Set(string key, string value)
+    public bool Set(string key, string value)
     {
         return GetDatabase().StringSet(key, value);
     }
     
-    public static string? Get(string key)
+    public string? Get(string key)
     {
         return GetDatabase().StringGet(key);
     }
     
-    public static bool Delete(string key)
+    public bool Delete(string key)
     {
         return GetDatabase().KeyDelete(key);
     }
     
-    public static bool Exists(string key)
+    public bool Exists(string key)
     {
         return GetDatabase().KeyExists(key);
     }
