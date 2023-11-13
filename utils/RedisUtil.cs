@@ -13,7 +13,7 @@ public class RedisUtil
 
     private void Init()
     {
-        string connectionString = "localhost:6379";
+        string connectionString = "localhost:6379,abortConnect=false";
         try
         {
             Connection = ConnectionMultiplexer.Connect(connectionString);
@@ -24,7 +24,8 @@ public class RedisUtil
             throw;
         }
     }
-    
+
+
     private IDatabase GetDatabase()
     {
         return Connection.GetDatabase();

@@ -1,19 +1,29 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using YorozuyaServer.config;
+//using YorozuyaServer.Data;
 using YorozuyaServer.server;
 using YorozuyaServer.server.impl;
 using YorozuyaServer.utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var mySqlConnStr = builder.Configuration.GetConnectionString("DefautConnection");
+
 // 添加服务
 builder.Services.AddControllers();
+
 builder.Services.AddSingleton(new RedisUtil());
 builder.Services.AddSingleton(new JwtUtil());
-builder.Services.AddDbContext<DbConfig>(ServiceLifetime.Singleton);
+//builder.Services.AddDbContext<DbConfig>(ServiceLifetime.Singleton);
+//连接MySQL
+builder.Services.AddDbContext<DbConfig>(options =>
+options.UseMySql(mySqlConnStr, ServerVersion.AutoDetect(mySqlConnStr)));
+
 builder.Services.AddSingleton<UserService, UserServiceImpl>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -33,6 +43,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
         
     });
+
+builder.Services.AddTransient<DbConfig>(_ =>
+{
+    var optionsBuilder = new DbContextOptionsBuilder<DbConfig>();
+    optionsBuilder.UseMySql(mySqlConnStr, ServerVersion.AutoDetect(mySqlConnStr));
+    return new DbConfig(optionsBuilder.Options);
+});
 
 var app = builder.Build();
 

@@ -5,15 +5,23 @@ namespace YorozuyaServer.config;
 
 public class DbConfig : DbContext
 {
+    public DbConfig(DbContextOptions<DbConfig> options) : base(options)
+    {
+
+    }
+
+    public DbConfig() { }
+
+
     public DbSet<UserInfo> UserInfos { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Reply> Replies { get; set; }
     public DbSet<Like> Likes { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseMySQL("server=localhost;port=3306;database=yorozuya;uid=root;pwd=root;CharSet=utf8mb4;");
-    }
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    optionsBuilder.UseMySQL("server=localhost;port=3306;database=yorozuya;uid=root;pwd=root;CharSet=utf8mb4;");
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -38,11 +46,11 @@ public class DbConfig : DbContext
         });
     }
 
-    // 测试连接
-    public static void TestConnection()
-    {
-        using var db = new DbConfig();
-        db.Database.EnsureCreated();
-        db.Database.EnsureDeleted();
-    }
+    //// 测试连接
+    //public static void TestConnection()
+    //{
+    //    using var db = new DbConfig();
+    //    db.Database.EnsureCreated();
+    //    db.Database.EnsureDeleted();
+    //}
 }
