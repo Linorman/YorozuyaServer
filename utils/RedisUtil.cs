@@ -32,7 +32,15 @@ public class RedisUtil
     
     public bool Set(string key, string value)
     {
-        return GetDatabase().StringSet(key, value);
+        var redisDb = GetDatabase();
+        bool tag = redisDb.StringSet(value, key);
+        return redisDb.StringSet(key, value) && tag;
+    }
+
+    public string? GetKey(string value)
+    {
+        var redisDb = GetDatabase();
+        return redisDb.StringGet(value);
     }
     
     public string? Get(string key)

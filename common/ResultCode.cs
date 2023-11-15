@@ -15,6 +15,9 @@ public record ResultCode(int Code, string Message)
     public static readonly ResultCode USER_PASSWORD_ERROR = new(404, "用户密码错误");
     public static readonly ResultCode USER_EXIST = new(405, "用户已存在");
     public static readonly ResultCode USER_ALREADY_LOGIN = new(406, "用户已登录");
+    
+    // 帖子相关
+    public static readonly ResultCode REPLY_PUBLISH_SUCCESS = new(220, "回复发布成功");
     #pragma
 
     public static string GetMessage(ResultCode code)
