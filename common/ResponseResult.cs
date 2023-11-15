@@ -1,4 +1,6 @@
-﻿namespace YorozuyaServer.common;
+﻿using YorozuyaServer.entity;
+
+namespace YorozuyaServer.common;
 
 public class ResponseResult<T>
 {
@@ -28,5 +30,10 @@ public class ResponseResult<T>
     public static ResponseResult<T> Fail(ResultCode resultCode, T data)
     {
         return new ResponseResult<T>(resultCode.Code, resultCode.Message, data);
+    }
+
+    internal static ResponseResult<Post> Error(string v)
+    {
+        throw new NotImplementedException();
     }
 }

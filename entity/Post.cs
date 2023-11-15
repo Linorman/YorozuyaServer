@@ -34,8 +34,17 @@ public partial class Post
     [JsonProperty("updateTime")]
     public string UpdateTime { get; set; }
 
+    [JsonProperty("field")]
+    [Required]
+    public string Field {  get; set; }
+
     [JsonProperty("views")]
     public long Views { get; set; }
+
+    public static implicit operator Post(Post v)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 
