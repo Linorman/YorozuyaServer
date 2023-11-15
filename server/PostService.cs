@@ -25,5 +25,32 @@ public interface PostService
     /// <param name="reply"></param>
     /// <returns>ResponseResult</returns>
     Task<ResponseResult<List<Reply>>> GetAllReply(string token);
-
+    
+    /// <summary>
+    /// 获取帖子回复
+    /// </summary>
+    /// <param name="reply"></param>
+    /// <returns>ResponseResult</returns>
+    Task<ResponseResult<List<Reply>>> GetPostReply(int postId, string token);
+    
+    /// <summary>
+    /// 采纳回复
+    /// </summary>
+    /// <param name="reply"></param>
+    /// <returns>ResponseResult</returns>
+    Task<ResponseResult<Reply?>> AcceptReply(int replyId, string token);
+    
+    /// <summary>
+    /// 点赞回复
+    /// </summary>
+    /// <param name="reply"></param>
+    /// <returns>ResponseResult</returns>
+    Task<ResponseResult<Reply?>> LikeReply(int replyId, string token);
+    
+    /// <summary>
+    /// 获取点赞状态
+    /// </summary>
+    /// <param name="reply"></param>
+    /// <returns>ResponseResult</returns>
+    Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, string token);
 }

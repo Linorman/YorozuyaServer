@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `reply` (
     `likes` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
     `postId` INTEGER NOT NULL,
-    `isAccepted` JSON NOT NULL,
+    `isAccepted` INTEGER NOT NULL DEFAULT 0 COMMENT '0是未采纳，1是已采纳',
     `createTime` VARCHAR(255) NOT NULL,
     `updateTime` VARCHAR(255) NOT NULL,
     `delTag` INTEGER NOT NULL DEFAULT 0 COMMENT '0是未删除，1是已删除',

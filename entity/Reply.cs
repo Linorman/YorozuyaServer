@@ -17,7 +17,7 @@ public partial class Reply
     public long Id { get; set; }
 
     [JsonProperty("isAccepted")]
-    public bool IsAccepted { get; set; }
+    public int IsAccepted { get; set; }
 
     [JsonProperty("likes")]
     public long Likes { get; set; }
