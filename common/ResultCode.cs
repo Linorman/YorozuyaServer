@@ -18,6 +18,12 @@ public record ResultCode(int Code, string Message)
     
     // 帖子相关
     public static readonly ResultCode REPLY_PUBLISH_SUCCESS = new(220, "回复发布成功");
+    public static readonly ResultCode REPLY_PUBLISH_FAIL = new(420, "回复发布失败");
+    public static readonly ResultCode REPLY_DELETE_SUCCESS = new(221, "回复删除成功");
+    public static readonly ResultCode REPLY_DELETE_FAIL = new(421, "回复删除失败");
+    public static readonly ResultCode REPLY_NOT_EXIST = new(422, "回复不存在");
+    public static readonly ResultCode GET_ALL_REPLY_SUCCESS = new(223, "获取全部回复成功");
+    public static readonly ResultCode GET_ALL_REPLY_FAIL = new(423, "获取全部回复失败");
     #pragma
 
     public static string GetMessage(ResultCode code)
