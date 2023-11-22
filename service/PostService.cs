@@ -1,7 +1,7 @@
 using YorozuyaServer.common;
 using YorozuyaServer.entity;
 
-namespace YorozuyaServer.server;
+namespace YorozuyaServer.service;
 
 public interface PostService
 {

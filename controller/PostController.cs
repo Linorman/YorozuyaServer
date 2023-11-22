@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YorozuyaServer.common;
 using YorozuyaServer.entity;
-using YorozuyaServer.server;
+using YorozuyaServer.service;
 
 
 [Route("api/post")]
