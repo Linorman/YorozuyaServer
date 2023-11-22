@@ -29,6 +29,9 @@ public partial class Post
 
     [JsonProperty("views")]
     public long Views { get; set; }
+
+    [JsonProperty("field")]
+    public string Field  { get; set; }
 }
 
 
