@@ -1,3 +1,5 @@
+CREATE DATABASE if NOT EXISTS yorozuya DEFAULT CHARACTER SET utf8mb4;
+USE yorozuya;
 CREATE TABLE IF NOT EXISTS `user_info` (
                                            `id` INTEGER NOT NULL AUTO_INCREMENT,
                                            `username` VARCHAR(255) NOT NULL,
