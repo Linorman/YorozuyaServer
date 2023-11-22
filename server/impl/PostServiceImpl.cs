@@ -196,12 +196,12 @@ public class PostServiceImpl : PostService
         return ResponseResult<Reply?>.Success(ResultCode.REPLY_LIKE_SUCCESS, reply);
     }
 
-    public async Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, string token)
+    public async Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, int userId, string token)
     {
         token = token[7..];
-        Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
+        Int32 userId1 = Int32.Parse(_redisUtil.GetKey(token)!);
         
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId1);
         if (userInfo == null)
         {
             return ResponseResult<Int32?>.Fail(ResultCode.USER_NOT_EXIST, null);
@@ -274,28 +274,11 @@ public class PostServiceImpl : PostService
         List<Post> posts=await _dbContext.Posts.Where(post=>post.Field == field).ToListAsync();
         if(posts.Count < 10)
         {
-            return ResponseResult<List<Post>>.Fail(ResultCode.GET_TEN_POSTS_FAIL, null);
+            return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_SUCCESS, posts);
         }
-        //随机给出十个
-        //// 使用 Fisher-Yates 算法进行洗牌
-        //Random random = new Random();
-        //int n = posts.Count;
-        //for (int i = n - 1; i > 0; i--)
-        //{
-        //    int j = random.Next(0, i + 1);
-        //    // 交换元素
-        //    Post temp = posts[i];
-        //    posts[i] = posts[j];
-        //    posts[j] = temp;
-        //}
+        List<Post> tenPosts = await _dbContext.Posts.Where(post => post.Field == field).OrderByDescending(post => post.Views).Take(10).ToListAsync();
 
-        //// 选择前十个元素
-        //List<Post> tenposts = posts.Take(10).ToList();
-
-        //按照浏览量给出十个
-        List<Post> tenposts = await _dbContext.Posts.Where(post => post.Field == field).OrderByDescending(post => post.Views).Take(10).ToListAsync();
-
-        return ResponseResult<List<Post>>.Success(ResultCode.GET_TEN_POSTS_SUCCESS, tenposts);
+        return ResponseResult<List<Post>>.Success(ResultCode.GET_TEN_POSTS_SUCCESS, tenPosts);
     }
 
     public async Task<ResponseResult<List<Post>>> GetAllPosts(string token)

@@ -56,7 +56,7 @@ public class PostController : ControllerBase
     /// 获取帖子回复
     /// </summary>
     /// <param></param>
-    [Authorize]
+    [AllowAnonymous]
     [HttpGet("postReplies")]
     public async Task<ActionResult<ResponseResult<List<Reply>>>> GetPostReply([FromForm] int postId, [FromHeader(Name = "Authorization")] string token)
     {
@@ -69,7 +69,7 @@ public class PostController : ControllerBase
     /// </summary>
     /// <param></param>
     [Authorize]
-    [HttpPost("acceptReply")]
+    [HttpPost("accept")]
     public async Task<ActionResult<ResponseResult<Reply?>>> AcceptReply([FromForm] int replyId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Reply?> responseResult = await _postService.AcceptReply(replyId, token);
@@ -94,9 +94,9 @@ public class PostController : ControllerBase
     /// <param></param>
     [Authorize]
     [HttpGet("isLiked")]
-    public async Task<ActionResult<ResponseResult<Int32?>>> GetLikeStatus([FromForm] int replyId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Int32?>>> GetLikeStatus([FromForm] int replyId, [FromForm] int userId, [FromHeader(Name = "Authorization")] string token)
     {
-        ResponseResult<Int32?> responseResult = await _postService.GetLikeStatus(replyId, token);
+        ResponseResult<Int32?> responseResult = await _postService.GetLikeStatus(replyId, userId, token);
         return CreatedAtAction(nameof(GetLikeStatus), responseResult);
     }
 
