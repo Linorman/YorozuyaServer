@@ -18,7 +18,7 @@ public class PostController : ControllerBase
     }
 
     /// <summary>
-    /// ·¢²¼Ìû×Ó
+    /// å‘å¸ƒå¸–å­
     /// </summary>
     /// <param name="title,content,field"></param>
     [HttpPost("push")]
@@ -31,7 +31,7 @@ public class PostController : ControllerBase
     }
 
     /// <summary>
-    /// É¾³ıÌû×Ó
+    /// åˆ é™¤å¸–å­
     /// </summary>
     /// <param name="postId"></param>
     [HttpDelete("remove")]
@@ -43,7 +43,7 @@ public class PostController : ControllerBase
     }
 
     /// <summary>
-    /// È¡ÏûµãÔŞ
+    /// å–æ¶ˆç‚¹èµ
     /// </summary>
     /// <param name="replyId"></param>
     [HttpDelete("cancelLike")]
@@ -55,7 +55,7 @@ public class PostController : ControllerBase
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÃ»§·¢ÌûÀúÊ·
+    /// è·å–ç”¨æˆ·å‘å¸–å†å²
     /// </summary>
     /// <param name="userId"></param>
     [HttpGet("history")]
@@ -67,7 +67,7 @@ public class PostController : ControllerBase
     }
 
     /// <summary>
-    /// »ñÈ¡Ê®¸ö¶ÔÓ¦ÁìÓòµÄÌû×Ó
+    /// è·å–åä¸ªå¯¹åº”é¢†åŸŸçš„å¸–å­
     /// </summary>
     /// <param name="field"></param>
     [HttpGet("getPostsByField")]
@@ -79,7 +79,7 @@ public class PostController : ControllerBase
     }
 
     /// <summary>
-    /// »ñÈ¡È«²¿Ìû×Ó
+    /// è·å–å…¨éƒ¨å¸–å­
     /// </summary>
     /// <param></param>
     [HttpGet("allPosts")]
@@ -91,7 +91,7 @@ public class PostController : ControllerBase
     }
 
     /// <summary>
-    /// »ñÈ¡¸ÃÁìÓòÈ«²¿Ìû×Ó
+    /// è·å–è¯¥é¢†åŸŸå…¨éƒ¨å¸–å­
     /// </summary>
     /// <param></param>
     [HttpGet("getAllPostsByField")]

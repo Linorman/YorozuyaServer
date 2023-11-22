@@ -140,23 +140,23 @@ public class PostServiceImpl : PostService
         {
             return ResponseResult<List<Post>>.Fail(ResultCode.GET_TEN_POSTS_FAIL, null);
         }
-        //Ëæ»ú¸ø³öÊ®¸ö
-        //// Ê¹ÓÃ Fisher-Yates Ëã·¨½øĞĞÏ´ÅÆ
+        //éšæœºç»™å‡ºåä¸ª
+        //// ä½¿ç”¨ Fisher-Yates ç®—æ³•è¿›è¡Œæ´—ç‰Œ
         //Random random = new Random();
         //int n = posts.Count;
         //for (int i = n - 1; i > 0; i--)
         //{
         //    int j = random.Next(0, i + 1);
-        //    // ½»»»ÔªËØ
+        //    // äº¤æ¢å…ƒç´ 
         //    Post temp = posts[i];
         //    posts[i] = posts[j];
         //    posts[j] = temp;
         //}
 
-        //// Ñ¡ÔñÇ°Ê®¸öÔªËØ
+        //// é€‰æ‹©å‰åä¸ªå…ƒç´ 
         //List<Post> tenposts = posts.Take(10).ToList();
 
-        //°´ÕÕä¯ÀÀÁ¿¸ø³öÊ®¸ö
+        //æŒ‰ç…§æµè§ˆé‡ç»™å‡ºåä¸ª
         List<Post> tenposts = await _dbContext.Posts.Where(post => post.Field == field).OrderByDescending(post => post.Views).Take(10).ToListAsync();
 
         return ResponseResult<List<Post>>.Success(ResultCode.GET_TEN_POSTS_SUCCESS, tenposts);
