@@ -11,7 +11,7 @@ public class JwtUtil
     {
         ClaimsIdentity claimsIdentity = new ClaimsIdentity(new[]
         {
-            new Claim(ClaimTypes.Name, Id.ToString()),
+            new Claim(ClaimTypes.Sid, Id.ToString()),
         });
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7JF5L1WS8b9S7Hd0De6h2djrV"));
         SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -21,6 +21,7 @@ public class JwtUtil
             audience: "yorozuya_audience",
             claims: claimsIdentity.Claims,
             expires: DateTime.UtcNow.AddDays(7),
+            notBefore: DateTime.UtcNow.AddMinutes(-5),
             signingCredentials: credentials
         );
 

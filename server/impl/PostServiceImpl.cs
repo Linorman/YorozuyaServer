@@ -22,7 +22,7 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 askerId = Int32.Parse(_redisUtil.GetKey(token)!);
 
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(askerId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)askerId);
         if (userInfo == null)
         {
             return ResponseResult<Post>.Fail(ResultCode.USER_NOT_EXIST, null);
@@ -47,12 +47,12 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 askerId = Int32.Parse(_redisUtil.GetKey(token)!);
 
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(askerId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)askerId);
         if (userInfo == null)
         {
             return ResponseResult<Post?>.Fail(ResultCode.USER_NOT_EXIST, null);
         }
-        Post? post = await _dbContext.Posts.FindAsync(postId);
+        Post? post = await _dbContext.Posts.FindAsync((long)postId);
 
         if (post == null)
         {
@@ -69,7 +69,7 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
         
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.USER_NOT_EXIST, null);
@@ -77,6 +77,7 @@ public class PostServiceImpl : PostService
         Reply reply = new Reply
         {
             PostId = postId,
+            UserId = userId,
             Content = content,
             CreateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
             UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
@@ -91,12 +92,12 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
         
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.USER_NOT_EXIST, null);
         }
-        Reply? reply = await _dbContext.Replies.FindAsync(replyId);
+        Reply? reply = await _dbContext.Replies.FindAsync((long)replyId);
         if (reply == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.REPLY_NOT_EXIST, null);
@@ -111,7 +112,7 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
         
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<List<Reply>>.Fail(ResultCode.USER_NOT_EXIST, null);
@@ -129,7 +130,7 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
         
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<List<Reply>>.Fail(ResultCode.USER_NOT_EXIST, null);
@@ -147,12 +148,12 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
         
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.USER_NOT_EXIST, null);
         }
-        Reply? reply = await _dbContext.Replies.FindAsync(replyId);
+        Reply? reply = await _dbContext.Replies.FindAsync((long)replyId);
         if (reply == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.REPLY_NOT_EXIST, null);
@@ -173,12 +174,12 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
         
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.USER_NOT_EXIST, null);
         }
-        Reply? reply = await _dbContext.Replies.FindAsync(replyId);
+        Reply? reply = await _dbContext.Replies.FindAsync((long)replyId);
         if (reply == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.REPLY_NOT_EXIST, null);
@@ -200,7 +201,7 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
         
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<Int32?>.Fail(ResultCode.USER_NOT_EXIST, null);
@@ -219,18 +220,18 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
 
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.USER_NOT_EXIST, null);
         }
-        Reply? reply = await _dbContext.Replies.FindAsync(replyId);
+        Reply? reply = await _dbContext.Replies.FindAsync((long)replyId);
         if (reply == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.REPLY_NOT_EXIST, null);
         }
         reply.Likes -= 1;
-        Like like = await _dbContext.Likes.FindAsync(replyId, userId);
+        Like? like = await _dbContext.Likes.FirstOrDefaultAsync(like => like.UserId == userId && like.ReplyId == replyId);
         if (like == null)
         {
             return ResponseResult<Reply?>.Fail(ResultCode.LIKE_CANCEL_FAIL, null);
@@ -246,7 +247,7 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
 
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<List<Post>>.Fail(ResultCode.USER_NOT_EXIST, null);
@@ -265,7 +266,7 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
 
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<List<Post>>.Fail(ResultCode.USER_NOT_EXIST, null);
@@ -302,7 +303,7 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
 
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<List<Post>>.Fail(ResultCode.USER_NOT_EXIST, null);
@@ -321,7 +322,7 @@ public class PostServiceImpl : PostService
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
 
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync(userId);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<List<Post>>.Fail(ResultCode.USER_NOT_EXIST, null);

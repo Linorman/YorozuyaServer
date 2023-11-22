@@ -14,6 +14,9 @@ builder.Services.AddSingleton(new RedisUtil());
 builder.Services.AddSingleton(new JwtUtil());
 builder.Services.AddDbContext<DbConfig>(ServiceLifetime.Singleton);
 builder.Services.AddSingleton<UserService, UserServiceImpl>();
+builder.Services.AddSingleton<PostService, PostServiceImpl>();
+
+// 添加认证
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -25,13 +28,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = "yorozuya",
             ValidAudience = "yorozuya_audience",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7JF5L1WS8b9S7Hd0De6h2djrV")),
+            ClockSkew = TimeSpan.Zero,
+            IssuerSigningKey =
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7JF5L1WS8b9S7Hd0De6h2djrV")),
             LifetimeValidator = (before, expires, token, param) =>
             {
                 return expires > DateTime.UtcNow;
             }
         };
-        
+
     });
 
 var app = builder.Build();
@@ -44,6 +50,9 @@ else
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

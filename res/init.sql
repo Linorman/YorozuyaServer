@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `post` (
     `createTime` VARCHAR(255) NOT NULL,
     `updateTime` VARCHAR(255) NOT NULL,
     `views` INTEGER NOT NULL,
+    `field` VARCHAR(255) NOT NULL,
     `delTag` INTEGER NOT NULL DEFAULT 0 COMMENT '0是未删除，1是已删除',
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

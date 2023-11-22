@@ -4,9 +4,8 @@ using YorozuyaServer.common;
 using YorozuyaServer.entity;
 using YorozuyaServer.server;
 
-namespace YorozuyaServer.controller;
 
-[Microsoft.AspNetCore.Components.Route("api/post")]
+[Route("api/post")]
 [ApiController]
 public class PostController : ControllerBase
 {
@@ -23,7 +22,7 @@ public class PostController : ControllerBase
     /// <param name="postId, content"></param>
     [Authorize]
     [HttpPost("reply")]
-    public async Task<ActionResult<ResponseResult<Reply?>>> PublishReply([FromBody] int postId, [FromBody] string content, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Reply?>>> PublishReply([FromForm] int postId, [FromForm] string content, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Reply?> responseResult = await _postService.PublishReply(postId, content, token);
         return CreatedAtAction(nameof(PublishReply), responseResult);
@@ -35,7 +34,7 @@ public class PostController : ControllerBase
     /// <param name="replyId"></param>
     [Authorize]
     [HttpDelete("deleteReply")]
-    public async Task<ActionResult<ResponseResult<Reply?>>> DeleteReply([FromBody] int replyId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Reply?>>> DeleteReply([FromForm] int replyId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Reply?> responseResult = await _postService.DeleteReply(replyId, token);
         return CreatedAtAction(nameof(DeleteReply), responseResult);
@@ -59,7 +58,7 @@ public class PostController : ControllerBase
     /// <param></param>
     [Authorize]
     [HttpGet("postReplies")]
-    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetPostReply([FromBody] int postId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetPostReply([FromForm] int postId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<List<Reply>> responseResult = await _postService.GetPostReply(postId, token);
         return CreatedAtAction(nameof(GetPostReply), responseResult);
@@ -71,7 +70,7 @@ public class PostController : ControllerBase
     /// <param></param>
     [Authorize]
     [HttpPost("acceptReply")]
-    public async Task<ActionResult<ResponseResult<Reply?>>> AcceptReply([FromBody] int replyId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Reply?>>> AcceptReply([FromForm] int replyId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Reply?> responseResult = await _postService.AcceptReply(replyId, token);
         return CreatedAtAction(nameof(AcceptReply), responseResult);
@@ -83,7 +82,7 @@ public class PostController : ControllerBase
     /// <param></param>
     [Authorize]
     [HttpPost("like")]
-    public async Task<ActionResult<ResponseResult<Reply?>>> LikeReply([FromBody] int replyId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Reply?>>> LikeReply([FromForm] int replyId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Reply?> responseResult = await _postService.LikeReply(replyId, token);
         return CreatedAtAction(nameof(LikeReply), responseResult);
@@ -95,7 +94,7 @@ public class PostController : ControllerBase
     /// <param></param>
     [Authorize]
     [HttpGet("isLiked")]
-    public async Task<ActionResult<ResponseResult<Int32?>>> GetLikeStatus([FromBody] int replyId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Int32?>>> GetLikeStatus([FromForm] int replyId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Int32?> responseResult = await _postService.GetLikeStatus(replyId, token);
         return CreatedAtAction(nameof(GetLikeStatus), responseResult);
@@ -107,7 +106,7 @@ public class PostController : ControllerBase
     /// <param name="title,content,field"></param>
     [HttpPost("push")]
     [Authorize]
-    public async Task<ActionResult<ResponseResult<Post>>> PostPost([FromBody] string title, [FromBody] string content,[FromBody] string field, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Post>>> PostPost([FromForm] string title, [FromForm] string content,[FromForm] string field, [FromHeader(Name = "Authorization")] string token)
     {
         
         ResponseResult<Post> responseResult = await _postService.PublishPost(title, content, field, token);
@@ -120,7 +119,7 @@ public class PostController : ControllerBase
     /// <param name="postId"></param>
     [HttpDelete("remove")]
     [Authorize]
-    public async Task<ActionResult<ResponseResult<Post?>>> DeletePost([FromBody] int PostId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Post?>>> DeletePost([FromForm] int PostId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Post?> responseResult=await _postService.DeletePost(PostId, token);
         return CreatedAtAction(nameof(DeletePost), responseResult);
@@ -132,7 +131,7 @@ public class PostController : ControllerBase
     /// <param name="replyId"></param>
     [HttpDelete("cancelLike")]
     [Authorize]
-    public async Task<ActionResult<ResponseResult<Reply?>>> CancelLike([FromBody] int ReplyId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Reply?>>> CancelLike([FromForm] int ReplyId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Reply?> responseResult = await _postService.CancelLike(ReplyId, token);
         return CreatedAtAction(nameof(CancelLike), responseResult);
@@ -156,7 +155,7 @@ public class PostController : ControllerBase
     /// <param name="field"></param>
     [HttpGet("getPostsByField")]
     [Authorize]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetTenPostsByField([FromQuery] string field, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<List<Post>>>> GetTenPostsByField([FromForm] string field, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<List<Post>> responseResult = await _postService.GetTenPostsByField(field, token);
         return CreatedAtAction(nameof(GetTenPostsByField), responseResult);
@@ -180,7 +179,7 @@ public class PostController : ControllerBase
     /// <param></param>
     [HttpGet("getAllPostsByField")]
     [Authorize]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetAllPostsByField([FromQuery] string field, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<List<Post>>>> GetAllPostsByField([FromForm] string field, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<List<Post>> responseResult = await _postService.GetAllPostsByField(field, token);
         return CreatedAtAction(nameof(GetAllPostsByField), responseResult);
