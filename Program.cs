@@ -2,8 +2,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using YorozuyaServer.config;
-using YorozuyaServer.server;
-using YorozuyaServer.server.impl;
+using YorozuyaServer.service;
+using YorozuyaServer.service.impl;
 using YorozuyaServer.utils;
 
 var builder = WebApplication.CreateBuilder(args);

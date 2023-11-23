@@ -3,7 +3,7 @@ using YorozuyaServer.config;
 using YorozuyaServer.entity;
 using YorozuyaServer.utils;
 
-namespace YorozuyaServer.server.impl;
+namespace YorozuyaServer.service.impl;
 
 public class UserServiceImpl : UserService
 {
