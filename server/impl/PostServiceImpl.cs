@@ -196,12 +196,12 @@ public class PostServiceImpl : PostService
         return ResponseResult<Reply?>.Success(ResultCode.REPLY_LIKE_SUCCESS, reply);
     }
 
-    public async Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, int userId, string token)
+    public async Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, string token)
     {
         token = token[7..];
-        Int32 userId1 = Int32.Parse(_redisUtil.GetKey(token)!);
+        Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
         
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId1);
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
             return ResponseResult<Int32?>.Fail(ResultCode.USER_NOT_EXIST, null);

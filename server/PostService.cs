@@ -52,7 +52,7 @@ public interface PostService
     /// </summary>
     /// <param name="reply"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, int userId, string token);
+    Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, string token);
 
     /// <summary>
     /// 发布帖子
