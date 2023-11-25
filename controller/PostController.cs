@@ -58,7 +58,7 @@ public class PostController : ControllerBase
     /// <param></param>
     [AllowAnonymous]
     [HttpGet("postReplies")]
-    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetPostReply([FromForm] int postId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetPostReply([FromQuery] int postId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<List<Reply>> responseResult = await _postService.GetPostReply(postId, token);
         return CreatedAtAction(nameof(GetPostReply), responseResult);
@@ -155,7 +155,7 @@ public class PostController : ControllerBase
     /// <param name="field"></param>
     [HttpGet("getPostsByField")]
     [Authorize]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetTenPostsByField([FromForm] string field, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<List<Post>>>> GetTenPostsByField([FromQuery] string field, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<List<Post>> responseResult = await _postService.GetTenPostsByField(field, token);
         return CreatedAtAction(nameof(GetTenPostsByField), responseResult);
