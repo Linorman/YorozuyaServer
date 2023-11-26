@@ -70,9 +70,9 @@ public class PostController : ControllerBase
     /// <param></param>
     [AllowAnonymous]
     [HttpGet("postReplies")]
-    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetPostReply([FromQuery] int postId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetPostReply([FromQuery] int postId)
     {
-        ResponseResult<List<Reply>> responseResult = await _postService.GetPostReply(postId, token);
+        ResponseResult<List<Reply>> responseResult = await _postService.GetPostReply(postId);
         return CreatedAtAction(nameof(GetPostReply), responseResult);
     }
     
@@ -177,11 +177,11 @@ public class PostController : ControllerBase
     /// 获取全部帖子
     /// </summary>
     /// <param></param>
+    [AllowAnonymous]
     [HttpGet("allPosts")]
-    [Authorize]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetAllPosts([FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<List<Post>>>> GetAllPosts()
     {
-        ResponseResult<List<Post>> responseResult = await _postService.GetAllPosts(token);
+        ResponseResult<List<Post>> responseResult = await _postService.GetAllPosts();
         return CreatedAtAction(nameof(GetAllPosts), responseResult);
     }
 

@@ -143,16 +143,8 @@ public class PostServiceImpl : PostService
         return ResponseResult<List<Reply>>.Success(ResultCode.GET_ALL_REPLY_SUCCESS, replies);
     }
     
-    public async Task<ResponseResult<List<Reply>>> GetPostReply(int postId, string token)
+    public async Task<ResponseResult<List<Reply>>> GetPostReply(int postId)
     {
-        token = token[7..];
-        Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
-        
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
-        if (userInfo == null)
-        {
-            return ResponseResult<List<Reply>>.Fail(ResultCode.USER_NOT_EXIST, null);
-        }
         List<Reply> replies = await _dbContext.Replies.Where(reply => reply.PostId == postId).ToListAsync();
         if (replies.Count == 0)
         {
@@ -299,17 +291,8 @@ public class PostServiceImpl : PostService
         return ResponseResult<List<Post>>.Success(ResultCode.GET_TEN_POSTS_SUCCESS, tenPosts);
     }
 
-    public async Task<ResponseResult<List<Post>>> GetAllPosts(string token)
+    public async Task<ResponseResult<List<Post>>> GetAllPosts()
     {
-        token = token[7..];
-        Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
-
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
-        if (userInfo == null)
-        {
-            return ResponseResult<List<Post>>.Fail(ResultCode.USER_NOT_EXIST, null);
-        }
-
         List<Post> posts = await _dbContext.Posts.ToListAsync();
         if(posts.Count == 0)
         {

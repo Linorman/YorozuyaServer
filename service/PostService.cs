@@ -38,7 +38,7 @@ public interface PostService
     /// </summary>
     /// <param name="reply"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Reply>>> GetPostReply(int postId, string token);
+    Task<ResponseResult<List<Reply>>> GetPostReply(int postId);
     
     /// <summary>
     /// 采纳回复
@@ -101,7 +101,7 @@ public interface PostService
     /// </summary>
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Post>>> GetAllPosts(string token);
+    Task<ResponseResult<List<Post>>> GetAllPosts();
 
     /// <summary>
     /// 获取该领域全部帖子
