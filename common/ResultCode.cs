@@ -30,6 +30,8 @@ public record ResultCode(int Code, string Message)
     public static readonly ResultCode GET_TEN_POSTS_SUCCESS = new(207, "获取相应领域问题成功");
     public static readonly ResultCode GET_POSTS_SUCCESS = new(208, "获取问题成功");
     public static readonly ResultCode GET_POSTS_FAIL = new(413, "获取问题失败");
+    public static readonly ResultCode GET_POSTS_BY_ID_SUCCESS = new(208, "查找问题成功");
+    public static readonly ResultCode GET_POSTS_BY_ID_FAIL = new(414, "查找问题失败");
 
 
 
@@ -40,13 +42,13 @@ public record ResultCode(int Code, string Message)
     public static readonly ResultCode REPLY_NOT_EXIST = new(422, "回复不存在");
     public static readonly ResultCode GET_ALL_REPLY_SUCCESS = new(223, "获取全部回复成功");
     public static readonly ResultCode GET_ALL_REPLY_FAIL = new(423, "获取全部回复失败");
-    public static readonly ResultCode GET_POST_REPLY_SUCCESS = new(224, "获取帖子回复成功");
-    public static readonly ResultCode GET_POST_REPLY_FAIL = new(424, "获取帖子回复失败");
+    public static readonly ResultCode GET_POST_REPLY_SUCCESS = new(224, "获取问题回复成功");
+    public static readonly ResultCode GET_POST_REPLY_FAIL = new(424, "获取问题回复失败");
     public static readonly ResultCode ACCEPT_REPLY_SUCCESS = new(225, "采纳回复成功");
     public static readonly ResultCode ACCEPT_REPLY_FAIL = new(425, "采纳回复失败");
     public static readonly ResultCode ACCEPT_REPLY_ALREADY = new(426, "回复已被采纳");
     public static readonly ResultCode ACCEPT_REPLY_NOT_EXIST = new(427, "回复不存在");
-    public static readonly ResultCode ACCEPT_REPLY_NOT_OWNER = new(428, "回复不属于该帖子");
+    public static readonly ResultCode ACCEPT_REPLY_NOT_OWNER = new(428, "回复不属于该问题");
     public static readonly ResultCode REPLY_LIKE_SUCCESS = new(226, "回复点赞成功");
     public static readonly ResultCode REPLY_LIKE_FAIL = new(426, "回复点赞失败");
     public static readonly ResultCode REPLY_LIKE_ALREADY_SUCCESS = new(227, "获取点赞状态成功");

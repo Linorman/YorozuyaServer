@@ -319,4 +319,24 @@ public class PostServiceImpl : PostService
         }
         return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_SUCCESS, posts);
     }
+
+    public async Task<ResponseResult<List<Post>>> GetPostByPostId(int postId)
+    {
+        List<Post> posts = await _dbContext.Posts.Where(post => post.Id == postId).ToListAsync();
+        if (posts == null)
+        {
+            return ResponseResult<List<Post>>.Fail(ResultCode.GET_POSTS_BY_ID_FAIL, null);
+        }
+        return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_BY_ID_SUCCESS, posts);
+    }
+
+    public async Task<ResponseResult<List<Post>>> GetPostByTitle(string title)
+    {
+        List<Post> posts = await _dbContext.Posts.Where(post => post.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+        if (posts == null)
+        {
+            return ResponseResult<List<Post>>.Fail(ResultCode.GET_POSTS_BY_ID_FAIL, null);
+        }
+        return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_BY_ID_SUCCESS, posts);
+    }
 }
