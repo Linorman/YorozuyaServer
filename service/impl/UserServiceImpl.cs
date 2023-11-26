@@ -41,28 +41,29 @@ public class UserServiceImpl : UserService
         return ResponseResult<UserInfo?>.Success(ResultCode.USER_REGISTER_SUCCESS, null);
     }
     
-    public async Task<ResponseResult<Dictionary<string, string>>> Login(string username, string password)
+    public async Task<ResponseResult<Dictionary<string, object>>> Login(string username, string password)
     {
         UserInfo? user = _dbContext.UserInfos.FirstOrDefault(u => u.Username == username);
         if (user == null)
         {
-            return ResponseResult<Dictionary<string, string>>.Fail(ResultCode.USER_NOT_EXIST, null!);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_NOT_EXIST, null!);
         }
         if (user.Password != password)
         {
-            return ResponseResult<Dictionary<string, string>>.Fail(ResultCode.USER_PASSWORD_ERROR, null!);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_PASSWORD_ERROR, null!);
         }
         if (_redisUtil.Exists(user.Id.ToString()))
         {
-            return ResponseResult<Dictionary<string, string>>.Fail(ResultCode.USER_ALREADY_LOGIN, null!);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_ALREADY_LOGIN, null!);
         }
 
         string token = _jwtUtil.GenerateJwtToken(user.Id);
         _redisUtil.Set(user.Id.ToString(), token);
-        Dictionary<string, string> data = new()
+        Dictionary<string, object> data = new()
         {
-            {"token", token}
+            {"token", token},
+            {"userInfo", user}
         };
-        return ResponseResult<Dictionary<string, string>>.Success(ResultCode.USER_LOGIN_SUCCESS, data);
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.USER_LOGIN_SUCCESS, data);
     }
 }

@@ -17,5 +17,5 @@ public interface UserService
     /// </summary>
     /// <param name="userInfo"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<Dictionary<string, string>>> Login(string username, string password);
+    Task<ResponseResult<Dictionary<string, object>>> Login(string username, string password);
 }

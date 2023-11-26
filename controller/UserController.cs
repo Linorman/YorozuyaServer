@@ -38,7 +38,7 @@ public class UserController : ControllerBase
     public async Task<ActionResult<ResponseResult<Dictionary<string, string>>>> Login([FromForm] string username,
         [FromForm] string password)
     {
-        ResponseResult<Dictionary<string, string>> responseResult = await _userService.Login(username, password);
+        ResponseResult<Dictionary<string, object>> responseResult = await _userService.Login(username, password);
         return CreatedAtAction(nameof(Login), responseResult);
     }
 }
