@@ -27,6 +27,13 @@ public interface PostService
     Task<ResponseResult<List<Reply>>> GetAllReply(string token);
     
     /// <summary>
+    /// 获取用户全部回复
+    /// </summary>
+    /// <param name="reply"></param>
+    /// <returns>ResponseResult</returns>
+    Task<ResponseResult<List<Reply>>> GetUsersAllReply(string token);
+    
+    /// <summary>
     /// 获取帖子回复
     /// </summary>
     /// <param name="reply"></param>

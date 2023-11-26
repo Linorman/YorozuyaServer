@@ -125,6 +125,24 @@ public class PostServiceImpl : PostService
         return ResponseResult<List<Reply>>.Success(ResultCode.GET_ALL_REPLY_SUCCESS, replies);
     }
     
+    public async Task<ResponseResult<List<Reply>>> GetUsersAllReply(string token)
+    {
+        token = token[7..];
+        Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
+        
+        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
+        if (userInfo == null)
+        {
+            return ResponseResult<List<Reply>>.Fail(ResultCode.USER_NOT_EXIST, null);
+        }
+        List<Reply> replies = await _dbContext.Replies.Where(reply => reply.UserId == userId).ToListAsync();
+        if (replies.Count == 0)
+        {
+            return ResponseResult<List<Reply>>.Fail(ResultCode.GET_ALL_REPLY_FAIL, null);
+        }
+        return ResponseResult<List<Reply>>.Success(ResultCode.GET_ALL_REPLY_SUCCESS, replies);
+    }
+    
     public async Task<ResponseResult<List<Reply>>> GetPostReply(int postId, string token)
     {
         token = token[7..];

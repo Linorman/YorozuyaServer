@@ -53,6 +53,18 @@ public class PostController : ControllerBase
     }
     
     /// <summary>
+    /// 获取用户全部回复
+    /// </summary>
+    /// <param name></param>
+    [Authorize]
+    [HttpGet("userReplies")]
+    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetUsersAllReply([FromHeader(Name = "Authorization")] string token)
+    {
+        ResponseResult<List<Reply>> responseResult = await _postService.GetUsersAllReply(token);
+        return CreatedAtAction(nameof(GetUsersAllReply), responseResult);
+    }
+    
+    /// <summary>
     /// 获取帖子回复
     /// </summary>
     /// <param></param>
