@@ -2,17 +2,17 @@
 
 public class ResponseResult<T>
 {
-    public int Code { get; set; }
+    public int code { get; set; }
 
-    public string Message { get; set; }
+    public string msg { get; set; }
 
-    public T Data { get; set; }
+    public T data { get; set; }
     
     private ResponseResult(int code, string message, T data)
     {
-        Code = code;
-        Message = message;
-        Data = data;
+        this.code = code;
+        this.msg = message;
+        this.data = data;
     }
 
     public static ResponseResult<T> Success(T data)

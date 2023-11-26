@@ -35,10 +35,22 @@ public class UserController : ControllerBase
     /// <param name="username, password"></param>
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<ActionResult<ResponseResult<Dictionary<string, string>>>> Login([FromForm] string username,
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> Login([FromForm] string username,
         [FromForm] string password)
     {
         ResponseResult<Dictionary<string, object>> responseResult = await _userService.Login(username, password);
         return CreatedAtAction(nameof(Login), responseResult);
+    }
+    
+    /// <summary>
+    /// 用户登出
+    /// </summary>
+    /// <param></param>
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<ActionResult<ResponseResult<Dictionary<string, string>>>> Logout([FromHeader(Name = "Authorization")] string token)
+    {
+        ResponseResult<Dictionary<string, object>> responseResult = await _userService.Logout(token);
+        return CreatedAtAction(nameof(Logout), responseResult);
     }
 }

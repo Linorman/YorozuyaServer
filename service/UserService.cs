@@ -18,4 +18,11 @@ public interface UserService
     /// <param name="userInfo"></param>
     /// <returns>ResponseResult</returns>
     Task<ResponseResult<Dictionary<string, object>>> Login(string username, string password);
+    
+    /// <summary>
+    /// 用户登出
+    /// </summary>
+    /// <param></param>
+    /// <returns>ResponseResult</returns>
+    Task<ResponseResult<Dictionary<string, object>>> Logout(string token);
 }

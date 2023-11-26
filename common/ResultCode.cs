@@ -50,7 +50,7 @@ public record ResultCode(int Code, string Message)
     public static readonly ResultCode REPLY_LIKE_SUCCESS = new(226, "回复点赞成功");
     public static readonly ResultCode REPLY_LIKE_FAIL = new(426, "回复点赞失败");
     public static readonly ResultCode REPLY_LIKE_ALREADY_SUCCESS = new(227, "获取点赞状态成功");
-#pragma
+    #pragma
 
     public static string GetMessage(ResultCode code)
     {

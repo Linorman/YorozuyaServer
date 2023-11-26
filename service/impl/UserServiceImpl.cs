@@ -1,4 +1,5 @@
-﻿using YorozuyaServer.common;
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+using YorozuyaServer.common;
 using YorozuyaServer.config;
 using YorozuyaServer.entity;
 using YorozuyaServer.utils;
@@ -65,5 +66,21 @@ public class UserServiceImpl : UserService
             {"userInfo", user}
         };
         return ResponseResult<Dictionary<string, object>>.Success(ResultCode.USER_LOGIN_SUCCESS, data);
+    }
+    
+    public async Task<ResponseResult<Dictionary<string, object>>> Logout(string token)
+    {
+        token = token[7..];
+        long askerId = long.Parse(_redisUtil.GetKey(token)!);
+        if (askerId == 0)
+        {
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_NOT_EXIST, null!);
+        }
+        bool tag = _redisUtil.Delete(askerId.ToString());
+        if (!tag)
+        {
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_NOT_EXIST, null!);
+        }
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.SUCCESS, null!);
     }
 }

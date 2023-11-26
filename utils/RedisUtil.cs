@@ -50,7 +50,13 @@ public class RedisUtil
     
     public bool Delete(string key)
     {
-        return GetDatabase().KeyDelete(key);
+        string? value = GetDatabase().StringGet(key);
+        if (value == null)
+        {
+            return false;
+        }
+        bool tag = GetDatabase().KeyDelete(key);
+        return tag && GetDatabase().KeyDelete(value);
     }
     
     public bool Exists(string key)
