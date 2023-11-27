@@ -109,4 +109,18 @@ public interface PostService
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
     Task<ResponseResult<List<Post>>> GetAllPostsByField(string field, string token);
+
+    /// <summary>
+    /// 根据postId获取帖子
+    /// </summary>
+    /// <param name="Post"></param>
+    /// <returns>ResponseResult</returns>
+    Task<ResponseResult<List<Post>>> GetPostByPostId(int postId);
+
+    /// <summary>
+    /// 根据title获取帖子
+    /// </summary>
+    /// <param name="Post"></param>
+    /// <returns>ResponseResult</returns>
+    Task<ResponseResult<List<Post>>> GetPostByTitle(string title);
 }

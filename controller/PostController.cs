@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using YorozuyaServer.common;
 using YorozuyaServer.entity;
 using YorozuyaServer.service;
@@ -195,5 +196,27 @@ public class PostController : ControllerBase
     {
         ResponseResult<List<Post>> responseResult = await _postService.GetAllPostsByField(field, token);
         return CreatedAtAction(nameof(GetAllPostsByField), responseResult);
+    }
+
+    /// <summary>
+    /// 根据postId获取帖子
+    /// </summary>
+    /// <param name="postId"></param>
+    [HttpGet("getPostByPostId")]
+    public async Task<ActionResult<ResponseResult<List<Post>>>> GetPostByPostId([FromQuery] int postId)
+    {
+        ResponseResult<List<Post>> responseResult = await _postService.GetPostByPostId(postId);
+        return CreatedAtAction(nameof(GetPostByPostId), responseResult);
+    }
+
+    /// <summary>
+    /// 根据title获取帖子
+    /// </summary>
+    /// <param name="title"></param>
+    [HttpGet("getPostByTitle")]
+    public async Task<ActionResult<ResponseResult<List<Post>>>> GetPostByTitle([FromQuery] string title)
+    {
+        ResponseResult<List<Post>> responseResult = await _postService.GetPostByTitle(title);
+        return CreatedAtAction(nameof(GetPostByTitle), responseResult);
     }
 }
