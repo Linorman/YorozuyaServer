@@ -55,7 +55,13 @@ public class UserServiceImpl : UserService
         }
         if (_redisUtil.Exists(user.Id.ToString()))
         {
-            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_ALREADY_LOGIN, null!);
+            string returnToken = _redisUtil.Get(user.Id.ToString())!;
+            Dictionary<string, object> dictionary = new()
+            {
+                {"token", returnToken},
+                {"userInfo", user}
+            };
+            return ResponseResult<Dictionary<string, object>>.Success(ResultCode.USER_LOGIN_SUCCESS, dictionary);
         }
 
         string token = _jwtUtil.GenerateJwtToken(user.Id);
