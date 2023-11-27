@@ -166,8 +166,8 @@ public class PostController : ControllerBase
     /// 获取十个对应领域的帖子
     /// </summary>
     /// <param name="field"></param>
+    [AllowAnonymous]
     [HttpGet("getPostsByField")]
-    [Authorize]
     public async Task<ActionResult<ResponseResult<List<Post>>>> GetTenPostsByField([FromQuery] string field, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<List<Post>> responseResult = await _postService.GetTenPostsByField(field, token);
@@ -191,7 +191,7 @@ public class PostController : ControllerBase
     /// </summary>
     /// <param></param>
     [HttpGet("getAllPostsByField")]
-    [Authorize]
+    [AllowAnonymous]
     public async Task<ActionResult<ResponseResult<List<Post>>>> GetAllPostsByField([FromForm] string field, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<List<Post>> responseResult = await _postService.GetAllPostsByField(field, token);
@@ -203,6 +203,7 @@ public class PostController : ControllerBase
     /// </summary>
     /// <param name="postId"></param>
     [HttpGet("getPostByPostId")]
+    [AllowAnonymous]
     public async Task<ActionResult<ResponseResult<List<Post>>>> GetPostByPostId([FromQuery] int postId)
     {
         ResponseResult<List<Post>> responseResult = await _postService.GetPostByPostId(postId);
@@ -214,6 +215,7 @@ public class PostController : ControllerBase
     /// </summary>
     /// <param name="title"></param>
     [HttpGet("getPostByTitle")]
+    [AllowAnonymous]
     public async Task<ActionResult<ResponseResult<List<Post>>>> GetPostByTitle([FromQuery] string title)
     {
         ResponseResult<List<Post>> responseResult = await _postService.GetPostByTitle(title);
