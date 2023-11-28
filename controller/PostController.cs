@@ -143,7 +143,7 @@ public class PostController : ControllerBase
     /// <param name="replyId"></param>
     [HttpDelete("cancelLike")]
     [Authorize]
-    public async Task<ActionResult<ResponseResult<Reply?>>> CancelLike([FromForm] int ReplyId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Reply?>>> CancelLike([FromQuery] int ReplyId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Reply?> responseResult = await _postService.CancelLike(ReplyId, token);
         return CreatedAtAction(nameof(CancelLike), responseResult);
