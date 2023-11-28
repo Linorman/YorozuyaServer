@@ -107,7 +107,7 @@ public class PostServiceImpl : PostService
         return ResponseResult<Reply?>.Success(ResultCode.REPLY_DELETE_SUCCESS, reply);
     }
     
-    public async Task<ResponseResult<List<Reply>>> GetAllReply(string token)
+    public async Task<ResponseResult<Dictionary<string, object>>> GetAllReply(string token)
     {
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
@@ -115,17 +115,21 @@ public class PostServiceImpl : PostService
         UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
-            return ResponseResult<List<Reply>>.Fail(ResultCode.USER_NOT_EXIST, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_NOT_EXIST, null);
         }
         List<Reply> replies = await _dbContext.Replies.ToListAsync();
+        Dictionary<string, object> data = new()
+        {
+            {"replyList", replies}
+        };
         if (replies.Count == 0)
         {
-            return ResponseResult<List<Reply>>.Fail(ResultCode.GET_ALL_REPLY_FAIL, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_ALL_REPLY_FAIL, data);
         }
-        return ResponseResult<List<Reply>>.Success(ResultCode.GET_ALL_REPLY_SUCCESS, replies);
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_ALL_REPLY_SUCCESS, data);
     }
     
-    public async Task<ResponseResult<List<Reply>>> GetUsersAllReply(string token)
+    public async Task<ResponseResult<Dictionary<string, object>>> GetUsersAllReply(string token)
     {
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
@@ -133,24 +137,32 @@ public class PostServiceImpl : PostService
         UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
-            return ResponseResult<List<Reply>>.Fail(ResultCode.USER_NOT_EXIST, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_NOT_EXIST, null);
         }
         List<Reply> replies = await _dbContext.Replies.Where(reply => reply.UserId == userId).ToListAsync();
+        Dictionary<string, object> data = new()
+        {
+            {"replyList", replies}
+        };
         if (replies.Count == 0)
         {
-            return ResponseResult<List<Reply>>.Fail(ResultCode.GET_ALL_REPLY_FAIL, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_ALL_REPLY_FAIL, data);
         }
-        return ResponseResult<List<Reply>>.Success(ResultCode.GET_ALL_REPLY_SUCCESS, replies);
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_ALL_REPLY_SUCCESS, data);
     }
     
-    public async Task<ResponseResult<List<Reply>>> GetPostReply(int postId)
+    public async Task<ResponseResult<Dictionary<string, object>>> GetPostReply(int postId)
     {
         List<Reply> replies = await _dbContext.Replies.Where(reply => reply.PostId == postId).ToListAsync();
+        Dictionary<string, object> data = new()
+        {
+            {"replyList", replies}
+        };
         if (replies.Count == 0)
         {
-            return ResponseResult<List<Reply>>.Fail(ResultCode.GET_POST_REPLY_FAIL, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_POST_REPLY_FAIL, data);
         }
-        return ResponseResult<List<Reply>>.Success(ResultCode.GET_POST_REPLY_SUCCESS, replies);
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_POST_REPLY_SUCCESS, data);
     }
     
     public async Task<ResponseResult<Reply?>> AcceptReply(int replyId, string token)
@@ -176,7 +188,7 @@ public class PostServiceImpl : PostService
         reply.IsAccepted = 1;
         _dbContext.Replies.Update(reply);
         await _dbContext.SaveChangesAsync();
-        return ResponseResult<Reply?>.Success(ResultCode.ACCEPT_REPLY_SUCCESS, reply);
+        return ResponseResult<Reply?>.Success(ResultCode.ACCEPT_REPLY_SUCCESS, null);
     }
     
     public async Task<ResponseResult<Reply?>> LikeReply(int replyId, string token)
@@ -203,7 +215,7 @@ public class PostServiceImpl : PostService
         _dbContext.Likes.Add(like);
         _dbContext.Replies.Update(reply);
         await _dbContext.SaveChangesAsync();
-        return ResponseResult<Reply?>.Success(ResultCode.REPLY_LIKE_SUCCESS, reply);
+        return ResponseResult<Reply?>.Success(ResultCode.REPLY_LIKE_SUCCESS, null);
     }
 
     public async Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, string token)
@@ -252,7 +264,7 @@ public class PostServiceImpl : PostService
         return ResponseResult<Reply?>.Success(ResultCode.LIKE_CANCEL_SUCCESS, reply);
     }
 
-    public async Task<ResponseResult<List<Post>>> GetUsersAllPosts(string token)
+    public async Task<ResponseResult<Dictionary<string, object>>> GetUsersAllPosts(string token)
     {
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
@@ -260,67 +272,95 @@ public class PostServiceImpl : PostService
         UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
-            return ResponseResult<List<Post>>.Fail(ResultCode.USER_NOT_EXIST, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_NOT_EXIST, null);
         }
 
         List<Post> posts = await _dbContext.Posts.Where(post => post.AskerId == userId).ToListAsync();
+        Dictionary<string, object> data = new()
+        {
+            {"postList", posts}
+        };
         if(posts.Count == 0)
         {
-            return ResponseResult<List<Post>>.Fail(ResultCode.GET_USER_POSTS_FAIL, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_USER_POSTS_FAIL, data);
         }
-        return ResponseResult<List<Post>>.Success(ResultCode.GET_USER_POSTS_SUCCESS, posts);
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_USER_POSTS_SUCCESS, data);
     }
 
-    public async Task<ResponseResult<List<Post>>> GetTenPostsByField(string field)
+    public async Task<ResponseResult<Dictionary<string, object>>> GetTenPostsByField(string field)
     {
         List<Post> posts=await _dbContext.Posts.Where(post=>post.Field == field).ToListAsync();
+        Dictionary<string, object> data = new()
+        {
+            {"postList", posts}
+        };
         if(posts.Count < 10)
         {
-            return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_SUCCESS, posts);
+            return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_POSTS_SUCCESS, data);
         }
         List<Post> tenPosts = await _dbContext.Posts.Where(post => post.Field == field).OrderByDescending(post => post.Views).Take(10).ToListAsync();
-
-        return ResponseResult<List<Post>>.Success(ResultCode.GET_TEN_POSTS_SUCCESS, tenPosts);
+        Dictionary<string, object> data1 = new()
+        {
+            {"postList", tenPosts}
+        };
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_TEN_POSTS_SUCCESS, data1);
     }
 
-    public async Task<ResponseResult<List<Post>>> GetAllPosts()
+    public async Task<ResponseResult<Dictionary<string, object>>> GetAllPosts()
     {
         List<Post> posts = await _dbContext.Posts.ToListAsync();
+        Dictionary<string, object> data = new()
+        {
+            {"postList", posts}
+        };
         if(posts.Count == 0)
         {
-            return ResponseResult<List<Post>>.Fail(ResultCode.GET_POSTS_FAIL, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_POSTS_FAIL, data);
         }
-        return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_SUCCESS, posts);
+        
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_POSTS_SUCCESS, data);
     }
 
-    public async Task<ResponseResult<List<Post>>> GetAllPostsByField(string field)
+    public async Task<ResponseResult<Dictionary<string, object>>> GetAllPostsByField(string field)
     {
         List<Post> posts = await _dbContext.Posts.Where(post => post.Field == field).ToListAsync();
-
+        
+        Dictionary<string, object> data = new()
+        {
+            {"postList", posts}
+        };
         if (posts.Count == 0)
         {
-            return ResponseResult<List<Post>>.Fail(ResultCode.GET_POSTS_FAIL, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_POSTS_FAIL, data);
         }
-        return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_SUCCESS, posts);
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_POSTS_SUCCESS, data);
     }
 
-    public async Task<ResponseResult<List<Post>>> GetPostByPostId(int postId)
+    public async Task<ResponseResult<Dictionary<string, object>>> GetPostByPostId(int postId)
     {
         List<Post> posts = await _dbContext.Posts.Where(post => post.Id == postId).ToListAsync();
+        Dictionary<string, object> data = new()
+        {
+            {"postList", posts}
+        };
         if (posts.Count() == 0)
         {
-            return ResponseResult<List<Post>>.Fail(ResultCode.GET_POSTS_BY_ID_FAIL, posts);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_POSTS_BY_ID_FAIL, data);
         }
-        return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_BY_ID_SUCCESS, posts);
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_POSTS_BY_ID_SUCCESS, data);
     }
 
-    public async Task<ResponseResult<List<Post>>> GetPostByTitle(string title)
+    public async Task<ResponseResult<Dictionary<string, object>>> GetPostByTitle(string title)
     {
         List<Post> posts = await _dbContext.Posts.Where(post => post.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+        Dictionary<string, object> data = new()
+        {
+            {"postList", posts}
+        };
         if (posts.Count() == 0)
         {
-            return ResponseResult<List<Post>>.Fail(ResultCode.GET_POSTS_BY_ID_FAIL, posts);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_POSTS_BY_ID_FAIL, data);
         }
-        return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_BY_ID_SUCCESS, posts);
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_POSTS_BY_ID_SUCCESS, data);
     }
 }

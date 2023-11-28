@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using YorozuyaServer.common;
 using YorozuyaServer.entity;
 using YorozuyaServer.service;
@@ -47,9 +46,9 @@ public class PostController : ControllerBase
     /// <param></param>
     [Authorize]
     [HttpGet("allReplies")]
-    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetAllReply([FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> GetAllReply([FromHeader(Name = "Authorization")] string token)
     {
-        ResponseResult<List<Reply>> responseResult = await _postService.GetAllReply(token);
+        ResponseResult<Dictionary<string, object>> responseResult = await _postService.GetAllReply(token);
         return CreatedAtAction(nameof(GetAllReply), responseResult);
     }
     
@@ -59,9 +58,9 @@ public class PostController : ControllerBase
     /// <param name></param>
     [Authorize]
     [HttpGet("userReplies")]
-    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetUsersAllReply([FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> GetUsersAllReply([FromHeader(Name = "Authorization")] string token)
     {
-        ResponseResult<List<Reply>> responseResult = await _postService.GetUsersAllReply(token);
+        ResponseResult<Dictionary<string, object>> responseResult = await _postService.GetUsersAllReply(token);
         return CreatedAtAction(nameof(GetUsersAllReply), responseResult);
     }
     
@@ -71,9 +70,9 @@ public class PostController : ControllerBase
     /// <param></param>
     [AllowAnonymous]
     [HttpGet("postReplies")]
-    public async Task<ActionResult<ResponseResult<List<Reply>>>> GetPostReply([FromQuery] int postId)
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> GetPostReply([FromQuery] int postId)
     {
-        ResponseResult<List<Reply>> responseResult = await _postService.GetPostReply(postId);
+        ResponseResult<Dictionary<string, object>> responseResult = await _postService.GetPostReply(postId);
         return CreatedAtAction(nameof(GetPostReply), responseResult);
     }
     
@@ -156,9 +155,9 @@ public class PostController : ControllerBase
     /// <param name="userId"></param>
     [HttpGet("history")]
     [Authorize]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetUsersAllPosts([FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> GetUsersAllPosts([FromHeader(Name = "Authorization")] string token)
     {
-        ResponseResult<List<Post>> responseResult = await _postService.GetUsersAllPosts(token);
+        ResponseResult<Dictionary<string, object>> responseResult = await _postService.GetUsersAllPosts(token);
         return CreatedAtAction(nameof(GetUsersAllPosts), responseResult);
     }
 
@@ -168,9 +167,9 @@ public class PostController : ControllerBase
     /// <param name="field"></param>
     [AllowAnonymous]
     [HttpGet("getPostsByField")]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetTenPostsByField([FromQuery] string field)
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> GetTenPostsByField([FromQuery] string field)
     {
-        ResponseResult<List<Post>> responseResult = await _postService.GetTenPostsByField(field);
+        ResponseResult<Dictionary<string, object>> responseResult = await _postService.GetTenPostsByField(field);
         return CreatedAtAction(nameof(GetTenPostsByField), responseResult);
     }
 
@@ -180,9 +179,9 @@ public class PostController : ControllerBase
     /// <param></param>
     [AllowAnonymous]
     [HttpGet("allPosts")]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetAllPosts()
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> GetAllPosts()
     {
-        ResponseResult<List<Post>> responseResult = await _postService.GetAllPosts();
+        ResponseResult<Dictionary<string, object>> responseResult = await _postService.GetAllPosts();
         return CreatedAtAction(nameof(GetAllPosts), responseResult);
     }
 
@@ -192,9 +191,9 @@ public class PostController : ControllerBase
     /// <param></param>
     [HttpGet("getAllPostsByField")]
     [AllowAnonymous]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetAllPostsByField([FromForm] string field)
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> GetAllPostsByField([FromForm] string field)
     {
-        ResponseResult<List<Post>> responseResult = await _postService.GetAllPostsByField(field);
+        ResponseResult<Dictionary<string, object>> responseResult = await _postService.GetAllPostsByField(field);
         return CreatedAtAction(nameof(GetAllPostsByField), responseResult);
     }
 
@@ -204,9 +203,9 @@ public class PostController : ControllerBase
     /// <param name="postId"></param>
     [HttpGet("getPostByPostId")]
     [AllowAnonymous]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetPostByPostId([FromQuery] int postId)
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> GetPostByPostId([FromQuery] int postId)
     {
-        ResponseResult<List<Post>> responseResult = await _postService.GetPostByPostId(postId);
+        ResponseResult<Dictionary<string, object>> responseResult = await _postService.GetPostByPostId(postId);
         return CreatedAtAction(nameof(GetPostByPostId), responseResult);
     }
 
@@ -216,9 +215,9 @@ public class PostController : ControllerBase
     /// <param name="title"></param>
     [HttpGet("getPostByTitle")]
     [AllowAnonymous]
-    public async Task<ActionResult<ResponseResult<List<Post>>>> GetPostByTitle([FromQuery] string title)
+    public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> GetPostByTitle([FromQuery] string title)
     {
-        ResponseResult<List<Post>> responseResult = await _postService.GetPostByTitle(title);
+        ResponseResult<Dictionary<string, object>> responseResult = await _postService.GetPostByTitle(title);
         return CreatedAtAction(nameof(GetPostByTitle), responseResult);
     }
 }

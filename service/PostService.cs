@@ -24,21 +24,21 @@ public interface PostService
     /// </summary>
     /// <param name="reply"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Reply>>> GetAllReply(string token);
+    Task<ResponseResult<Dictionary<string, object>>> GetAllReply(string token);
     
     /// <summary>
     /// 获取用户全部回复
     /// </summary>
     /// <param name="reply"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Reply>>> GetUsersAllReply(string token);
+    Task<ResponseResult<Dictionary<string, object>>> GetUsersAllReply(string token);
     
     /// <summary>
     /// 获取帖子回复
     /// </summary>
     /// <param name="reply"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Reply>>> GetPostReply(int postId);
+    Task<ResponseResult<Dictionary<string, object>>> GetPostReply(int postId);
     
     /// <summary>
     /// 采纳回复
@@ -87,40 +87,40 @@ public interface PostService
     /// </summary>
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Post>>> GetUsersAllPosts(string token);
+    Task<ResponseResult<Dictionary<string, object>>> GetUsersAllPosts(string token);
 
     /// <summary>
     /// 获取十个对应领域的帖子
     /// </summary>
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Post>>> GetTenPostsByField(string field);
+    Task<ResponseResult<Dictionary<string, object>>> GetTenPostsByField(string field);
 
     /// <summary>
     /// 获取全部帖子
     /// </summary>
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Post>>> GetAllPosts();
+    Task<ResponseResult<Dictionary<string, object>>> GetAllPosts();
 
     /// <summary>
     /// 获取该领域全部帖子
     /// </summary>
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Post>>> GetAllPostsByField(string field);
+    Task<ResponseResult<Dictionary<string, object>>> GetAllPostsByField(string field);
 
     /// <summary>
     /// 根据postId获取帖子
     /// </summary>
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Post>>> GetPostByPostId(int postId);
+    Task<ResponseResult<Dictionary<string, object>>> GetPostByPostId(int postId);
 
     /// <summary>
     /// 根据title获取帖子
     /// </summary>
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Post>>> GetPostByTitle(string title);
+    Task<ResponseResult<Dictionary<string, object>>> GetPostByTitle(string title);
 }
