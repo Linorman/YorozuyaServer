@@ -154,6 +154,11 @@ public class PostServiceImpl : PostService
     public async Task<ResponseResult<Dictionary<string, object>>> GetPostReply(int postId)
     {
         List<Reply> replies = await _dbContext.Replies.Where(reply => reply.PostId == postId).ToListAsync();
+        Post? post = await _dbContext.Posts.FindAsync((long)postId);
+        post!.Views += 1;
+        _dbContext.Posts.Update(post);
+        await _dbContext.SaveChangesAsync();
+        
         Dictionary<string, object> data = new()
         {
             {"replyList", replies}
