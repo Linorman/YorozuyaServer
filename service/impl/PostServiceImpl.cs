@@ -60,7 +60,7 @@ public class PostServiceImpl : PostService
         }
         _dbContext.Posts.Remove(post);
         await _dbContext.SaveChangesAsync();
-        return ResponseResult<Post?>.Success(ResultCode.POST_DELETE_SUCCESS, post);
+        return ResponseResult<Post?>.Success(ResultCode.POST_DELETE_SUCCESS, null);
     }
 
     
@@ -106,7 +106,7 @@ public class PostServiceImpl : PostService
         }
         _dbContext.Replies.Remove(reply);
         await _dbContext.SaveChangesAsync();
-        return ResponseResult<Reply?>.Success(ResultCode.REPLY_DELETE_SUCCESS, reply);
+        return ResponseResult<Reply?>.Success(ResultCode.REPLY_DELETE_SUCCESS, null);
     }
     
     public async Task<ResponseResult<Dictionary<string, object>>> GetAllReply(string token)
@@ -413,14 +413,14 @@ public class PostServiceImpl : PostService
             return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_POSTS_BY_ID_FAIL, null);
         }
         List<Post> posts = await _dbContext.Posts.Where(post => post.Id == postId).ToListAsync();
-        Dictionary<string, object> data = new()
-        {
-            {"postList", posts}
-        };
         if (posts.Count() == 0)
         {
-            return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_POSTS_BY_ID_SUCCESS, data);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.GET_POSTS_BY_ID_FAIL, null);
         }
+        Dictionary<string, object> data = new()
+        {
+            {"post", posts[0]}
+        };
         return ResponseResult<Dictionary<string, object>>.Success(ResultCode.GET_POSTS_BY_ID_SUCCESS, data);
     }
 
@@ -437,7 +437,7 @@ public class PostServiceImpl : PostService
         List<Post> posts = await _dbContext.Posts.Where(post => post.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToListAsync();
         Dictionary<string, object> data = new()
         {
-            {"postList", posts}
+            {"post", posts}
         };
         if (posts.Count() == 0)
         {

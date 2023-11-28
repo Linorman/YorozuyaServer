@@ -34,7 +34,7 @@ public class PostController : ControllerBase
     /// <param name="replyId"></param>
     [Authorize]
     [HttpDelete("deleteReply")]
-    public async Task<ActionResult<ResponseResult<Reply?>>> DeleteReply([FromForm] int replyId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Reply?>>> DeleteReply([FromQuery] int replyId, [FromHeader(Name = "Authorization")] string token)
     {
         ResponseResult<Reply?> responseResult = await _postService.DeleteReply(replyId, token);
         return CreatedAtAction(nameof(DeleteReply), responseResult);
@@ -131,9 +131,9 @@ public class PostController : ControllerBase
     /// <param name="postId"></param>
     [HttpDelete("remove")]
     [Authorize]
-    public async Task<ActionResult<ResponseResult<Post?>>> DeletePost([FromForm] int PostId, [FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult<ResponseResult<Post?>>> DeletePost([FromQuery] int postId, [FromHeader(Name = "Authorization")] string token)
     {
-        ResponseResult<Post?> responseResult=await _postService.DeletePost(PostId, token);
+        ResponseResult<Post?> responseResult=await _postService.DeletePost(postId, token);
         return CreatedAtAction(nameof(DeletePost), responseResult);
     }
 
