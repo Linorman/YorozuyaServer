@@ -30,3 +30,4 @@ public class ResponseResult<T>
         return new ResponseResult<T>(resultCode.Code, resultCode.Message, data);
     }
 }
+
