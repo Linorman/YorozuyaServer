@@ -83,6 +83,8 @@ public class PostServiceImpl : PostService
             UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
         };
         _dbContext.Replies.Add(reply);
+        Post tPost = await _dbContext.Posts.FindAsync(postId);
+        tPost.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         await _dbContext.SaveChangesAsync();
         return ResponseResult<Reply?>.Success(ResultCode.REPLY_PUBLISH_SUCCESS, reply);
     }
