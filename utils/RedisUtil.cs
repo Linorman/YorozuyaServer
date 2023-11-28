@@ -13,7 +13,7 @@ public class RedisUtil
 
     private void Init()
     {
-        string connectionString = "localhost:6379";
+        string connectionString = "redis:6379";
         try
         {
             Connection = ConnectionMultiplexer.Connect(connectionString);
