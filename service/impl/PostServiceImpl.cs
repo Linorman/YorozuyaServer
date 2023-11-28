@@ -154,6 +154,11 @@ public class PostServiceImpl : PostService
     public async Task<ResponseResult<Dictionary<string, object>>> GetPostReply(int postId)
     {
         List<Reply> replies = await _dbContext.Replies.Where(reply => reply.PostId == postId).ToListAsync();
+        Post? post = await _dbContext.Posts.FindAsync((long)postId);
+        post!.Views += 1;
+        _dbContext.Posts.Update(post);
+        await _dbContext.SaveChangesAsync();
+        
         Dictionary<string, object> data = new()
         {
             {"replyList", replies}
@@ -218,7 +223,7 @@ public class PostServiceImpl : PostService
         return ResponseResult<Reply?>.Success(ResultCode.REPLY_LIKE_SUCCESS, null);
     }
 
-    public async Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, string token)
+    public async Task<ResponseResult<Dictionary<string, object>>> GetLikeStatus(int replyId, string token)
     {
         token = token[7..];
         Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
@@ -226,15 +231,18 @@ public class PostServiceImpl : PostService
         UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
         if (userInfo == null)
         {
-            return ResponseResult<Int32?>.Fail(ResultCode.USER_NOT_EXIST, null);
+            return ResponseResult<Dictionary<string, object>>.Fail(ResultCode.USER_NOT_EXIST, null);
         }
         
         Like? like = await _dbContext.Likes.FirstOrDefaultAsync(like => like.UserId == userId && like.ReplyId == replyId);
+        Dictionary<string, object> data = new();
         if (like == null)
         {
-            return ResponseResult<Int32?>.Success(ResultCode.REPLY_LIKE_ALREADY_SUCCESS, 0);
+            data.Add("isLiked", 0);
+            return ResponseResult<Dictionary<string, object>>.Success(ResultCode.REPLY_LIKE_ALREADY_SUCCESS, data);
         }
-        return ResponseResult<Int32?>.Success(ResultCode.REPLY_LIKE_ALREADY_SUCCESS, 1);
+        data.Add("isLiked", 1);
+        return ResponseResult<Dictionary<string, object>>.Success(ResultCode.REPLY_LIKE_ALREADY_SUCCESS, data);
     }
 
     public async Task<ResponseResult<Reply?>> CancelLike(int replyId, string token)

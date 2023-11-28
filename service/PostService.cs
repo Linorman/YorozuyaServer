@@ -59,7 +59,7 @@ public interface PostService
     /// </summary>
     /// <param name="reply"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<Int32?>> GetLikeStatus(int replyId, string token);
+    Task<ResponseResult<Dictionary<string, object>>> GetLikeStatus(int replyId, string token);
 
     /// <summary>
     /// 发布帖子
