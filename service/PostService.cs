@@ -94,7 +94,7 @@ public interface PostService
     /// </summary>
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Post>>> GetTenPostsByField(string field, string token);
+    Task<ResponseResult<List<Post>>> GetTenPostsByField(string field);
 
     /// <summary>
     /// 获取全部帖子
@@ -108,7 +108,7 @@ public interface PostService
     /// </summary>
     /// <param name="Post"></param>
     /// <returns>ResponseResult</returns>
-    Task<ResponseResult<List<Post>>> GetAllPostsByField(string field, string token);
+    Task<ResponseResult<List<Post>>> GetAllPostsByField(string field);
 
     /// <summary>
     /// 根据postId获取帖子

@@ -271,16 +271,8 @@ public class PostServiceImpl : PostService
         return ResponseResult<List<Post>>.Success(ResultCode.GET_USER_POSTS_SUCCESS, posts);
     }
 
-    public async Task<ResponseResult<List<Post>>> GetTenPostsByField(string field, string token)
+    public async Task<ResponseResult<List<Post>>> GetTenPostsByField(string field)
     {
-        token = token[7..];
-        Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
-
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
-        if (userInfo == null)
-        {
-            return ResponseResult<List<Post>>.Fail(ResultCode.USER_NOT_EXIST, null);
-        }
         List<Post> posts=await _dbContext.Posts.Where(post=>post.Field == field).ToListAsync();
         if(posts.Count < 10)
         {
@@ -301,16 +293,8 @@ public class PostServiceImpl : PostService
         return ResponseResult<List<Post>>.Success(ResultCode.GET_POSTS_SUCCESS, posts);
     }
 
-    public async Task<ResponseResult<List<Post>>> GetAllPostsByField(string field, string token)
+    public async Task<ResponseResult<List<Post>>> GetAllPostsByField(string field)
     {
-        token = token[7..];
-        Int32 userId = Int32.Parse(_redisUtil.GetKey(token)!);
-
-        UserInfo? userInfo = await _dbContext.UserInfos.FindAsync((long)userId);
-        if (userInfo == null)
-        {
-            return ResponseResult<List<Post>>.Fail(ResultCode.USER_NOT_EXIST, null);
-        }
         List<Post> posts = await _dbContext.Posts.Where(post => post.Field == field).ToListAsync();
 
         if (posts.Count == 0)
