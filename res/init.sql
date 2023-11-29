@@ -44,3 +44,10 @@ CREATE TABLE IF NOT EXISTS `like` (
                                       `userId` INTEGER NOT NULL,
                                       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `image` (
+                                       `id` INTEGER NOT NULL AUTO_INCREMENT,
+                                       `postId` INTEGER NOT NULL,
+                                       `imageUrl` VARCHAR(255) NOT NULL,
+                                       PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

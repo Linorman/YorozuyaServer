@@ -9,6 +9,8 @@ public class DbConfig : DbContext
     public DbSet<Post> Posts { get; set; }
     public DbSet<Reply> Replies { get; set; }
     public DbSet<Like> Likes { get; set; }
+    
+    public DbSet<Image> Images { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -35,6 +37,11 @@ public class DbConfig : DbContext
         modelBuilder.Entity<Like>(entity =>
         {
             entity.ToTable("like");
+        });
+        
+        modelBuilder.Entity<Image>(entity =>
+        {
+            entity.ToTable("image");
         });
     }
 

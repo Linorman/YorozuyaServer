@@ -52,6 +52,12 @@ public record ResultCode(int Code, string Message)
     public static readonly ResultCode REPLY_LIKE_SUCCESS = new(226, "回复点赞成功");
     public static readonly ResultCode REPLY_LIKE_FAIL = new(426, "回复点赞失败");
     public static readonly ResultCode REPLY_LIKE_ALREADY_SUCCESS = new(227, "获取点赞状态成功");
+    
+    // 文件相关
+    public static readonly ResultCode FILE_UPLOAD_SUCCESS = new(230, "文件上传成功");
+    public static readonly ResultCode FILE_UPLOAD_FAIL = new(429, "文件上传失败");
+    public static readonly ResultCode FILE_GET_SUCCESS = new(231, "文件获取成功");
+    public static readonly ResultCode FILE_GET_FAIL = new(430, "文件获取失败");
     #pragma
 
     public static string GetMessage(ResultCode code)
