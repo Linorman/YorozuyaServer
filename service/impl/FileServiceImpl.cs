@@ -18,7 +18,7 @@ public class FileServiceImpl : FileService
         _dbContext = dbContext;
     }
     
-    public async Task<ResponseResult<Dictionary<string, object>>> UploadFile(string fileName, Stream fileStream, int postId, string token)
+    public async Task<ResponseResult<Dictionary<string, object>>> UploadFile(string fileName, IFormFile file, int postId, string token)
     {
         token = token[7..];
         Int32 askerId = Int32.Parse(_redisUtil.GetKey(token)!);
@@ -30,10 +30,10 @@ public class FileServiceImpl : FileService
         }
 
         String objName = "post-" + "postId-" + postId + "-" + fileName;
-        bool flag = _minioUtil.Upload(objName, fileStream);
+        bool flag = await _minioUtil.Upload(objName, file);
         if (flag)
         {
-            string url = "http://9v9wfp1dl24a.xiaomiqiu.com" + "/yorozuya/" + objName;
+            string url = "minio" + "/yorozuya/" + objName;
             Image image = new()
             {
                 ImageUrl = url,

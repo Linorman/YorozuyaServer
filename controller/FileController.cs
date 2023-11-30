@@ -25,7 +25,7 @@ public class FileController : ControllerBase
     [HttpPost("upload")]
     public async Task<ActionResult<ResponseResult<Dictionary<string, object>>>> UploadFile([FromForm] IFormFile file, [FromForm] int postId, [FromHeader(Name = "Authorization")] string token)
     {
-        ResponseResult<Dictionary<string, object>> responseResult = await _fileService.UploadFile(file.FileName, file.OpenReadStream(), postId, token);
+        ResponseResult<Dictionary<string, object>> responseResult = await _fileService.UploadFile(file.FileName, file, postId, token);
         return CreatedAtAction(nameof(UploadFile), responseResult);
     }
     

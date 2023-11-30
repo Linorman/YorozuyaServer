@@ -1,6 +1,8 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using System.Security.Cryptography;
 using Minio;
+using Minio.DataModel;
 using Minio.DataModel.Args;
+using Minio.DataModel.Encryption;
 
 namespace YorozuyaServer.utils;
 
@@ -76,15 +78,20 @@ public class MinioUtil
     /// <param name="filePath"></param>
     /// <param name="inputStream"></param>
     /// <returns></returns>
-    public bool Upload(string filePath, Stream inputStream)
+    public async Task<bool> Upload(string filePath, IFormFile file)
     {
+        byte[] buffer = new byte[file.Length];
+        await file.OpenReadStream().ReadAsync(buffer, 0, buffer.Length);
+        Stream filestream = new MemoryStream(buffer);
         try
         {
             var objectArgs = new PutObjectArgs()
                 .WithBucket(bucketName)
                 .WithObject(filePath)
-                .WithStreamData(inputStream);
-            _minioClient.PutObjectAsync(objectArgs).Wait();
+                .WithStreamData(filestream)
+                .WithObjectSize(filestream.Length)
+                .WithContentType(file.ContentType);
+            await _minioClient.PutObjectAsync(objectArgs);
         }
         catch (Exception e)
         {
