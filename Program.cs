@@ -12,11 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton(new RedisUtil());
 builder.Services.AddSingleton(new JwtUtil());
-builder.Services.AddSingleton(new MinioUtil("minio", "minioadmin", "minioadmin", "yorozuya"));
-builder.Services.AddDbContext<DbConfig>();
-builder.Services.AddSingleton<UserService, UserServiceImpl>();
-builder.Services.AddSingleton<PostService, PostServiceImpl>();
-builder.Services.AddSingleton<FileService, FileServiceImpl>();
+builder.Services.AddSingleton(new MinioUtil("minio:9000", "minioadmin", "minioadmin", "yorozuya"));
+builder.Services.AddDbContext<DbConfig>(ServiceLifetime.Transient);
+builder.Services.AddTransient<UserService, UserServiceImpl>();
+builder.Services.AddTransient<PostService, PostServiceImpl>();
+builder.Services.AddTransient<FileService, FileServiceImpl>();
 
 // 添加认证
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

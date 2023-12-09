@@ -33,7 +33,7 @@ public class FileServiceImpl : FileService
         bool flag = await _minioUtil.Upload(objName, file);
         if (flag)
         {
-            string url = "minio" + "/yorozuya/" + objName;
+            string url = "minio:9000" + "/yorozuya/" + objName;
             Image image = new()
             {
                 ImageUrl = url,
